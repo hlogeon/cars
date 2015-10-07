@@ -21,6 +21,8 @@ class RoomController extends Controller {
 
 		$company = false;
 
+        $isAdmin = \Auth::user()->name === 'admin';
+
 		if( \Auth::user()->company ) {
 
 			if( \Auth::user()->company->id != $room->company->id )
@@ -30,7 +32,7 @@ class RoomController extends Controller {
 
 		} else {
 
-			if( \Auth::user()->id != $room->request->user->id ) 
+			if( \Auth::user()->id != $room->request->user->id || !$isAdmin)
 				return redirect()->route('home');
 
 		}
@@ -66,7 +68,7 @@ class RoomController extends Controller {
 			->with('request', $room->request)
 			->with('room', $room)
 			->with('layout', $option)
-			->with('user', \Auth::user());
+			->with('user', $isAdmin ? $room->request->user : \Auth::user());
 
 	}
 

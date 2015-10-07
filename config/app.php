@@ -15,6 +15,8 @@ return [
 
 	'debug' => env('APP_DEBUG'),
 
+    'admin_mail' => ' komtrnas-club@mail.ru',
+
 	/*
 	|--------------------------------------------------------------------------
 	| Application URL

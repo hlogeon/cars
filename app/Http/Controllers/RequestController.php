@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class RequestController extends Controller {
 
-	public function create() {
+	public function create(Requests\Request $req) {
 
 		if( ! \Auth::user()->is_ready() )
 			return 'hello lamer';
@@ -49,13 +49,13 @@ class RequestController extends Controller {
 
 		$request->save();
 
-		return $this->createRooms($request);
+		return $this->createRooms($request, $req);
 
 		return $request;
 
 	}
 
-	public function createRooms($request){
+	public function createRooms($request, $httpRequest){
 
 		$companies = \App\Company::whereHas('models', function($q) use($request){
 			$q->whereId($request->model_id);
@@ -78,6 +78,16 @@ class RequestController extends Controller {
 				$msg->to($company->user->email)
 				->subject('Новый заказ | Комтранс');
 			});
+            $admin = $httpRequest->getAdmin();
+            if($admin){
+                \Mail::queue('emails.request', [
+                    'request' => $request,
+                    'room' => $room
+                ], function($msg) use($admin){
+                    $msg->to($admin->email)
+                        ->subject('Новый заказ | Комтранс');
+                });
+            }
 		}
 
 	}

@@ -1,14 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests;
+use App\Http\Requests\Request as Request;
 use App\Http\Controllers\Controller;
 use \Carbon\Carbon;
 
-use Illuminate\Http\Request;
-
 class ResponseController extends Controller {
 
-	public function create() {
+	public function create(Request $request) {
 
 		$input = (object)\Input::all();
 
@@ -72,6 +70,17 @@ class ResponseController extends Controller {
 			$msg->to($room->request->user->email)
 			->subject('Новый заказ | Комтранс');
 		});
+        $admin = $request->getAdmin();
+        if($admin){
+            \Mail::queue('emails.response_admin', [
+                'request' => $room->request,
+                'room' => $room,
+                'company' => $company
+            ], function($msg) use ($admin){
+                $msg->to($admin->email)
+                    ->subject('Новый заказ | Комтранс');
+            });
+        }
 
 	}
 
