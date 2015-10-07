@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel {
 	protected $commands = [
 		'App\Console\Commands\Inspire',
 		'App\Console\Commands\SlugForFeedback',
+        'App\Console\Commands\ModerateRequests',
 	];
 
 	/**
@@ -23,8 +24,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected function schedule(Schedule $schedule)
 	{
-		$schedule->command('inspire')
-				 ->hourly();
+		$schedule->command('moderate:requests')->everyTenMinutes();
 	}
 
 }

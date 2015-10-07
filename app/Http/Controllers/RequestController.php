@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class RequestController extends Controller {
 
-	public function create(Requests\Request $req) {
+	public function create(Requests\BaseRequest $req) {
 
 		if( ! \Auth::user()->is_ready() )
 			return 'hello lamer';

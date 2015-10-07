@@ -1,12 +1,13 @@
 <?php namespace App\Http\Controllers;
 
+use App\Http\Requests\BaseRequest;
 use App\Http\Requests\Request as Request;
 use App\Http\Controllers\Controller;
 use \Carbon\Carbon;
 
 class ResponseController extends Controller {
 
-	public function create(Request $request) {
+	public function create(BaseRequest $request) {
 
 		$input = (object)\Input::all();
 
