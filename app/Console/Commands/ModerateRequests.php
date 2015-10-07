@@ -39,7 +39,7 @@ class ModerateRequests extends Command {
 	 */
 	public function fire()
 	{
-		$requests = Request::where('updated_at', '>', Carbon::now()->format('Y-m-d H:i:s'))
+		$requests = Request::where('updated_at', '<', Carbon::now()->subHour()->format('Y-m-d H:i:s'))
             ->where('status', 0)->get();
         foreach($requests as $request){
             $request->updated_at = Carbon::now();
